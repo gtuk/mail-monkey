@@ -2,7 +2,7 @@
 
 Mail Monkey is a simple application to test your emails during development.
 
-![peerflix](https://raw.github.com/gtuk/mail-monkey/master/screenshot.png)
+![mail-monkey](https://raw.github.com/gtuk/mail-monkey/master/screenshot.png)
 
 ## Install
 
