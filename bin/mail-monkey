@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const fs = require('fs');
+
+const index = path.join(path.dirname(fs.realpathSync(__filename)), '../index.js');
+const MailMonkey = require(index);
+
+new MailMonkey().start();

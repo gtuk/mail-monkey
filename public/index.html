@@ -1,0 +1,126 @@
+<!doctype html>
+<html ng-app="mailMonkey">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/app.css">
+
+    <title>Mail Monkey</title>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                Mail Monkey
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid" ng-controller="MailController">
+
+    <div ng-show="error" class="alert alert-danger" role="alert">
+        <a ng-click="closeAlert()" href="#" class="close" aria-label="close">&times;</a>
+        {{alertMessage}}
+    </div>
+
+    <div ng-show="success" class="alert alert-success" role="alert">
+        <a ng-click="closeAlert()" href="#" class="close" aria-label="close">&times;</a>
+        {{alertMessage}}
+    </div>
+
+    <div class="row message-wrapper rounded shadow mb-20">
+        <div class="col-md-3 message-sideleft">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <h3 class="panel-title">Inbox</h3>
+                    </div>
+                    <div class="pull-right">
+                        <button ng-click="refresh()" type="button" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="panel-body no-padding">
+                    <div class="list-group no-margin list-message">
+                        <a ng-click="loadEmail(email.id)" href="#" class="list-group-item" ng-repeat="email in emails">
+                            <h4 class="list-group-item-heading">{{email.from.text}} <small>{{email.date}}</small></h4>
+                            <p class="list-group-item-text">
+                                <strong>{{email.subject}}</strong>
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="email" class="col-md-9 message-sideright">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="media">
+                        <div class="mail-actions pull-right">
+                            <button ng-click="relayEmail(email.id)" type="button" class="btn btn-default"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
+                            <button ng-click="deleteEmail(email.id)" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                        </div>
+
+                        <div class="media-body">
+                            <h4 class="media-heading">{{email.from.text}} <small>(to: {{email.to.text}})</small></h4>
+                            <small>{{email.date}}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p class="lead">
+                        {{email.subject}}
+                    </p>
+                    <hr>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#html" aria-controls="html" role="tab" data-toggle="tab">HTML</a></li>
+                        <li role="presentation"><a href="#text" aria-controls="text" role="tab" data-toggle="tab">Text</a></li>
+                        <li role="presentation"><a href="#source" aria-controls="source" role="tab" data-toggle="tab">Source</a></li>
+                        <li role="presentation"><a href="#header" aria-controls="header" role="tab" data-toggle="tab">Header</a></li>
+                        <li role="presentation"><a href="#attachments" aria-controls="header" role="tab" data-toggle="tab">Attachments</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="html">
+                            <iframe ng-src="{{getIframeUrl(email.id)}}" onload="this.height=this.contentWindow.document.body.scrollHeight;" frameborder="0" scrolling="no"></iframe>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="text">
+                            {{email.text}}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="source">
+                            {{email.textAsHtml}}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="header">
+                            <p ng-repeat="header in email.headerLines">
+                                <strong>{{header.key}}:</strong> {{header.line}}
+                            </p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="attachments">
+                            <p ng-repeat="attachment in email.attachments">
+                                <a target="_blank" href="/api/emails/{{email.id}}/attachments/{{attachment.partId}}">{{attachment.filename}}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/angular.min.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
