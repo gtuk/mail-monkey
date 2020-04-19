@@ -13,3 +13,10 @@ Mail Monkey is a simple application to test your emails during development.
     $ mail-monkey --help (List available options)
     $ mail-monkey (Run with default parameters)
 
+#### TODO
+
+ - Improve test coverage
+ - Extend README
+ - Publish to npm
+ - Migrate frontend code to vue.js
+
